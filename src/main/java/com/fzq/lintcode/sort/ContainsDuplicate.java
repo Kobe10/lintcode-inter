@@ -51,44 +51,42 @@ public class ContainsDuplicate {
      * @date 2019/5/7 13:42
      */
     public static boolean containsNearbyDuplicate(int[] nums, int k) {
-        Map<Integer, Set<Integer>> map = new HashMap<>();
-        if (nums.length < 2) {
-            return false;
-        }
-
         for (int i = 0; i < nums.length; i++) {
-            if (map.get(nums[i]) != null) {
-                Set<Integer> count = map.get(nums[i]);
-                count.add(i);
-
-                map.put(nums[i], count);
-            } else{
-                Set<Integer> count = new HashSet<>();
-                count.add(i);
-                map.put(nums[i], count);
-            }
-        }
-
-        //遍历map
-        for (Map.Entry<Integer, Set<Integer>> m : map.entrySet()) {
-            Set<Integer> set = m.getValue();
-            if (set.size() < 2)
-                continue;
-
-            List<Integer> list =  new ArrayList<>(set);
-            if (k == list.get(0) - list.get(list.size() - 1)) {
-                return true;
+            for (int j = i + 1; j < nums.length && j <= i + k; j++) {
+                if (nums[i] == nums[j]) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
+    /**
+     * 给定一个整数数组，判断数组中是否有两个不同的索引 i 和 j，使得 nums [i] 和 nums [j] 的差的绝对值最大为 t，并且 i 和 j 之间的差的绝对值最大为 ķ。
+     *
+     * @param nums
+     * @param k
+     * @param t
+     * @return boolean
+     * @author fuzq
+     * @date 2019/5/9 10:06
+     */
+    public static boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length && j <= i + k; j++) {
+                if (nums[i] - nums[j] < t) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
-        int k = 2;
-        int[] num = {1,2,3,1,2,3};
+        int k = 1;
+        int[] num = {1, 2, 3, 1, 2, 3};
         int[] num1 = {1, 2, 3, 4};
-        int[] num2 = {1, 2, 3, 1};
-        System.out.println(containsNearbyDuplicate(num, k));
+        int[] num2 = {1, 0, 1, 1};
+        System.out.println(containsNearbyDuplicate(num2, k));
     }
 }
